@@ -1,0 +1,11 @@
+{
+  "name": "accurateweb/email-template-bundle",
+  "suggest": {
+    "sonata-project/admin-bundle": "Enable E-mail template administration with Sonata Admin"
+  },
+  "autoload": {
+    "psr-4" : {
+      "Accurateweb\\EmailTemplateBundle\\" : ""
+    }
+  }
+}

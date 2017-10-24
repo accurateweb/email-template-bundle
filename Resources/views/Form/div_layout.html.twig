@@ -1,0 +1,12 @@
+{% block aw_email_templating_supported_variables_widget %}
+<div class="supported-variable-list-container container">
+  <table class="supported-variable-list table table-sm" style="width:50%">
+    {% for var, val in value %}
+      <tr>
+        <td>%{{ var }}%</td>
+        <td>{{ val.description }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

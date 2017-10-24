@@ -1,0 +1,11 @@
+#aw_email_templating:
+#  email_templates:
+#    my_template:
+#      description: My very first template
+#      variables:
+#        foo: { description: Bar}
+#      defaults:
+#        subject: |
+#          Email from template
+#        body: |
+#          Dear %foo%, here is your Email!
