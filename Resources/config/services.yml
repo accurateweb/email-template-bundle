@@ -49,4 +49,5 @@ services:
 
   aw_email_templating.type.supported_variables:
     class: Accurateweb\EmailTemplateBundle\Form\Type\SupportedVariablesType
-    tags: ["form.type"]
+    tags:
+      - { name: "form.type" }
