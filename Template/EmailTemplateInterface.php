@@ -14,6 +14,8 @@ namespace Accurateweb\EmailTemplateBundle\Template;
 
 interface EmailTemplateInterface
 {
+  public function getId();
+
   public function getDescription();
 
   public function getSupportedVariables();

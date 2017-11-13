@@ -25,6 +25,12 @@ class Configuration implements ConfigurationInterface
 
     $rootNode
       ->children()
+        ->arrayNode('templating')
+          ->children()
+            ->scalarNode('loader')->defaultValue('aw_email_templating.template.loader.default')->end()
+            ->scalarNode('entity')->end()
+          ->end()
+        ->end()
         ->arrayNode('email_templates')
           ->prototype('array')
             ->children()

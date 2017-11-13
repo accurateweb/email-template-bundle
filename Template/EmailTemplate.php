@@ -27,6 +27,11 @@ class EmailTemplate implements EmailTemplateInterface
     $this->variables = $variables;
   }
 
+  public function getId()
+  {
+    return $this->getAlias();
+  }
+
   public function getAlias()
   {
     return $this->alias;

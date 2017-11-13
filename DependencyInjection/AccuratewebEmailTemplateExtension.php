@@ -33,6 +33,17 @@ class AccuratewebEmailTemplateExtension extends Extension
     {
       $definition->addMethodCall('setTemplate', array($name, $configuration));
     }
+
+    if (isset($_config['templating']['entity']))
+    {
+      $definition = $container->getDefinition('aw_email_templating.template.loader.doctrine');
+      $definition->setArgument(1, $_config['templating']['entity']);
+    }
+
+    $loaderDefinition = $container->getDefinition($_config['templating']['loader']);
+
+    $definition = $container->getDefinition('aw_email_templating.template.factory');
+    $definition->setArgument(0, $loaderDefinition);
   }
 
   public function getAlias()

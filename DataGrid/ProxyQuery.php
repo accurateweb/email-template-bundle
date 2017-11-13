@@ -52,7 +52,7 @@ class ProxyQuery extends \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery
         if ($existingTemplateObject->getAlias() == $alias)
         {
           $found = true;
-          $newResult->append($existingTemplateObject);
+          $newResult->add($existingTemplateObject);
 
           $existingTemplateObject->setDescription($template->getDescription());
           $existingTemplateObject->setSupportedVariables($template->getSupportedVariables());

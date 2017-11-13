@@ -49,6 +49,11 @@ abstract class EmailTemplate implements EmailTemplateInterface
    */
   protected $supportedVariables;
 
+  public function getId()
+  {
+    return $this->getAlias();
+  }
+
   /**
    * @return mixed
    */

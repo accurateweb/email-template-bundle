@@ -11,6 +11,8 @@
 
 namespace Accurateweb\EmailTemplateBundle\Template\Loader;
 
+use Accurateweb\EmailTemplateBundle\Entity\EmailTemplate;
+use Accurateweb\EmailTemplateBundle\Template\EmailTemplateInterface;
 use Doctrine\ORM\EntityManager;
 
 class DoctrineTemplateLoader implements TemplateLoaderInterface
@@ -26,7 +28,7 @@ class DoctrineTemplateLoader implements TemplateLoaderInterface
    *
    * @param EntityManager $em
    */
-  function __construct(EntityManager $em, $entity)
+  public function __construct(EntityManager $em, $entity)
   {
     $this->em = $em;
     $this->entity = $entity;
@@ -38,8 +40,19 @@ class DoctrineTemplateLoader implements TemplateLoaderInterface
    * @param $templateName
    * @return
    */
-  public function load($templateName)
+  public function load(EmailTemplateInterface $template)
   {
-    //$entity = $this->em;
+    $entity =  $this->em->getRepository($this->entity)->find($template->getId());
+
+    if ($entity)
+    {
+      if (!$entity instanceof EmailTemplate)
+      {
+        throw new \Exception('Must be an instance of Accurateweb\EmailTemplateBundle\Entity\EmailTemplate');
+      }
+
+      $template->setSubject($entity->getSubject());
+      $template->setBody($entity->getBody());
+    }
   }
 }

@@ -14,6 +14,8 @@ namespace Accurateweb\EmailTemplateBundle\Admin;
 use Accurateweb\EmailTemplateBundle\Form\Type\SupportedVariablesType;
 use Accurateweb\EmailTemplateBundle\Template\EmailTemplate;
 
+use Accurateweb\EmailTemplateBundle\Template\EmailTemplateInterface;
+use ExcamBundle\Form\TinyMceType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -30,10 +32,12 @@ class EmailTemplateAdmin extends AbstractAdmin
   protected function configureFormFields(FormMapper $form)
   {
     $form
-      ->add('SupportedVariables', SupportedVariablesType::class, array('label' => 'Available variables'))
-      ->add('Subject', TextType::class, array('label' => 'Email subject template'))
-      ->add('Body', TextareaType::class, array(
-        'label' => 'Email body template',
+      ->add('SupportedVariables', SupportedVariablesType::class, array(
+        'label' => 'Доступные переменные'
+      ))
+      ->add('Subject', TextType::class, array('label' => 'Шаблон темы письма'))
+      ->add('Body', TinyMceType::class, array(
+        'label' => 'Шаблон тела письма',
         'attr' => array('rows' => 20)
       ));
   }
@@ -66,9 +70,9 @@ class EmailTemplateAdmin extends AbstractAdmin
 
   public function toString($object)
   {
-    return $object instanceof EmailTemplate
+    return $object instanceof EmailTemplateInterface
       ? $object->getDescription()
-      : 'Email Template';
+      : $this->trans('Email Template');
   }
 
   protected function configureRoutes(RouteCollection $collection)

@@ -1,5 +1,4 @@
 parameters:
-  aw_email_templating.templating.loader.class: Accurateweb\EmailTemplateBundle\Template\Loader\DefaultTemplateLoader
   aw_email_templating.templating.engine.class: Accurateweb\EmailTemplateBundle\Template\Engine\SimpleTemplateEngine
 
   aw_email_template_admin.email_template_group: Message templates
@@ -30,8 +29,14 @@ services:
         - [setModelManager, ['@aw_email_template_admin.model_manager'] ]
         - [setTemplate, [edit, AccuratewebEmailTemplateBundle:EmailTemplateAdmin:edit.html.twig]]
 
-  aw_email_templating.template.loader:
-    class: %aw_email_templating.templating.loader.class%
+  aw_email_templating.template.loader.default:
+    class: Accurateweb\EmailTemplateBundle\Template\Loader\DefaultTemplateLoader
+
+  aw_email_templating.template.loader.doctrine:
+    class: Accurateweb\EmailTemplateBundle\Template\Loader\DoctrineTemplateLoader
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - ~
 
   aw_email_templating.template.engine:
     class: %aw_email_templating.templating.engine.class%
@@ -39,10 +44,9 @@ services:
   aw_email_templating.template.factory:
     class: Accurateweb\EmailTemplateBundle\Email\Factory\EmailFactory
     arguments:
-      - "@aw_email_templating.template.loader"
+      - ~
       - "@aw_email_templating.template.engine"
 
   aw_email_templating.type.supported_variables:
     class: Accurateweb\EmailTemplateBundle\Form\Type\SupportedVariablesType
-    tags:
-      - { name: "form.type" }
+    tags: ["form.type"]
