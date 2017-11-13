@@ -32,11 +32,9 @@ class EmailTemplateAdmin extends AbstractAdmin
   protected function configureFormFields(FormMapper $form)
   {
     $form
-      ->add('SupportedVariables', SupportedVariablesType::class, array(
-        'label' => 'Доступные переменные'
-      ))
-      ->add('Subject', TextType::class, array('label' => 'Шаблон темы письма'))
-      ->add('Body', TinyMceType::class, array(
+      ->add('SupportedVariables', 'Accurateweb\\EmailTemplateBundle\\Form\\Type\\SupportedVariablesType', array('label' => 'Доступные переменные'))
+      ->add('Subject', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', array('label' => 'Шаблон темы письма'))
+      ->add('Body', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', array(
         'label' => 'Шаблон тела письма',
         'attr' => array('rows' => 20)
       ));
