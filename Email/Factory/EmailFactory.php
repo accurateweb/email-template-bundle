@@ -11,12 +11,14 @@
 
 namespace Accurateweb\EmailTemplateBundle\Email\Factory;
 
+use Accurateweb\EmailTemplateBundle\Event\EmailMessageEvent;
 use Accurateweb\EmailTemplateBundle\Exception\TemplateNotFoundException;
 use Accurateweb\EmailTemplateBundle\Model\Email;
 use Accurateweb\EmailTemplateBundle\Template\Engine\TemplateEngineInterface;
 use Accurateweb\EmailTemplateBundle\Template\Loader\TemplateLoaderInterface;
 use Accurateweb\EmailTemplateBundle\Template\EmailTemplate;
 use Accurateweb\EmailTemplateBundle\Template\EmailTemplateInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Email Factory
@@ -42,15 +44,20 @@ class EmailFactory
    */
   private $templates;
 
+  private $imagesAsAttachments=false;
+
+  private $eventDispatcher;
+
   /**
    * SmsFactory constructor.
    *
    * @param TemplateLoaderInterface $loader
    */
-  public function __construct(TemplateLoaderInterface $loader, TemplateEngineInterface $engine)
+  public function __construct(TemplateLoaderInterface $loader, TemplateEngineInterface $engine, EventDispatcherInterface $eventDispatcher)
   {
     $this->loader = $loader;
     $this->engine = $engine;
+    $this->eventDispatcher = $eventDispatcher;
     $this->templates = [];
   }
 
@@ -130,6 +137,18 @@ class EmailFactory
         $this->engine->render($template->getBody(), $values),
         'text/html');
 
+    $this->eventDispatcher->dispatch('aw.email.message.create', new EmailMessageEvent($message));
+
     return $message;
+  }
+
+  /**
+   * @param bool $imagesAsAttachments
+   * @return $this
+   */
+  public function setImagesAsAttachments ($imagesAsAttachments)
+  {
+    $this->imagesAsAttachments = $imagesAsAttachments;
+    return $this;
   }
 }

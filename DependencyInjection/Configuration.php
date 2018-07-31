@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
         ->arrayNode('templating')
           ->children()
             ->scalarNode('loader')->defaultValue('aw_email_templating.template.loader.default')->end()
+            ->booleanNode('images_as_attachment')->defaultFalse()->end()
             ->scalarNode('entity')->end()
           ->end()
         ->end()

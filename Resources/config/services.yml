@@ -46,8 +46,15 @@ services:
     arguments:
       - ~
       - "@aw_email_templating.template.engine"
+      - '@event_dispatcher'
 
   aw_email_templating.type.supported_variables:
     class: Accurateweb\EmailTemplateBundle\Form\Type\SupportedVariablesType
     tags:
       - { name: "form.type" }
+
+  aw_email_templating.listener.image_as_attachment:
+    class: Accurateweb\EmailTemplateBundle\EventListener\ImagesAsAttachment
+    arguments: ['%kernel.root_dir%/../web']
+    public: false
+    autowire: false

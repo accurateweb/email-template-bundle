@@ -13,6 +13,7 @@ namespace Accurateweb\EmailTemplateBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
@@ -44,6 +45,20 @@ class AccuratewebEmailTemplateExtension extends Extension
 
     $definition = $container->getDefinition('aw_email_templating.template.factory');
     $definition->replaceArgument(0, $loaderDefinition);
+
+    if (isset($_config['templating']['images_as_attachment']) && $_config['templating']['images_as_attachment'])
+    {
+      $listener = $container->getDefinition('aw_email_templating.listener.image_as_attachment');
+//      $imagesAsAttachment = new Definition('Accurateweb\\EmailTemplateBundle\\EventListener', array(
+//        $container->getParameter('kernel.root_dir').'/../web/'
+//      ));
+      $listener->addTag('kernel.event_listener', array(
+        'name' => 'kernel.event_listener',
+        'event' => 'aw.email.message.create',
+        'method' => 'onCreateMessage',
+      ));
+//      $container->get('event_dispatcher')->addListenerService('aw.email.message.create', array($listener, 'onCreateMessage'));
+    }
   }
 
   public function getAlias()
