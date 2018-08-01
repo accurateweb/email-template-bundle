@@ -21,12 +21,33 @@ class ImagesAsAttachment
 
     foreach ($matches[1] as $img)
     {
-
-      if (!preg_match('#^[a-zA-Z]+://#', $img))
+      if (preg_match('#^[a-zA-Z]+://#', $img))
       {
-        $cid = $message->embed(\Swift_Image::fromPath($this->imageBaseDir . $img));
-        $body = str_replace($img, $cid, $body);
+        $filePath = tempnam(sys_get_temp_dir(), 'AwEmailImage');
+
+        try
+        {
+          $imgContent = file_get_contents($img);
+        }
+        catch (\Exception $e)
+        {
+          /*
+           * Если попытка скачать изображение вызвала исключение (например не можем разресолвить домен или изображение отсутствует),
+           *   то не будем заменять ее
+           * Есть вариант вставлять в таких случаях заглушку
+           */
+          continue;
+        }
+
+        file_put_contents($filePath, $imgContent);
       }
+      else
+      {
+        $filePath = sprintf('%s%s', $this->imageBaseDir, $img);
+      }
+
+      $cid = $message->embed(\Swift_Image::fromPath($filePath));
+      $body = str_replace($img, $cid, $body);
     }
 
     $message->setBody($body);
