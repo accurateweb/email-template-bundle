@@ -12,6 +12,7 @@
 namespace Accurateweb\EmailTemplateBundle;
 
 use Accurateweb\EmailTemplateBundle\DependencyInjection\AccuratewebEmailTemplateExtension;
+use Accurateweb\EmailTemplateBundle\DependencyInjection\Compiler\TemplateLoaderCompilerPass;
 use Accurateweb\EmailTemplateBundle\DependencyInjection\Compiler\TwigFormResourceCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -31,5 +32,6 @@ class AccuratewebEmailTemplateBundle extends Bundle
   public function build(ContainerBuilder $container)
   {
     $container->addCompilerPass(new TwigFormResourceCompilerPass());
+    $container->addCompilerPass(new TemplateLoaderCompilerPass());
   }
 }
