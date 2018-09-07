@@ -55,6 +55,6 @@ services:
 
   aw_email_templating.listener.image_as_attachment:
     class: Accurateweb\EmailTemplateBundle\EventListener\ImagesAsAttachment
-    arguments: ['%kernel.root_dir%/../web']
+    arguments: ['%kernel.root_dir%/../web', '@logger']
     public: false
     autowire: false

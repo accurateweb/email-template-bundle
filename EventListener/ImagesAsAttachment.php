@@ -3,14 +3,18 @@
 namespace Accurateweb\EmailTemplateBundle\EventListener;
 
 use Accurateweb\EmailTemplateBundle\Event\EmailMessageEvent;
+use Swift_IoException;
+use Psr\Log\LoggerInterface;
 
 class ImagesAsAttachment
 {
   private $imageBaseDir;
+  private $logger;
 
-  public function __construct ($imageBaseDir)
+  public function __construct ($imageBaseDir, LoggerInterface $logger)
   {
     $this->imageBaseDir = $imageBaseDir;
+    $this->logger = $logger;
   }
 
   public function onCreateMessage (EmailMessageEvent $emailMessageEvent)
@@ -43,10 +47,23 @@ class ImagesAsAttachment
       }
       else
       {
+        if (preg_match('/^\.\.\/.*/', $img))
+        {
+          $img = '/'.$img;
+        }
+
         $filePath = sprintf('%s%s', $this->imageBaseDir, $img);
       }
 
-      $cid = $message->embed(\Swift_Image::fromPath($filePath));
+      try
+      {
+        $cid = $message->embed(\Swift_Image::fromPath($filePath));
+      }
+      catch (Swift_IoException $e)
+      {
+        $this->logger->warning($e->getMessage());
+      }
+
       $body = str_replace($img, $cid, $body);
     }
 
