@@ -55,6 +55,8 @@ services:
 
   aw_email_templating.listener.image_as_attachment:
     class: Accurateweb\EmailTemplateBundle\EventListener\ImagesAsAttachment
-    arguments: ['%kernel.root_dir%/../web', '@logger']
+    arguments: ['%kernel.root_dir%/../web', '@logger', ~]
     public: false
     autowire: false
+    tags:
+      - { name: kernel.event_listener, event: aw.email.message.create, method: onCreateMessage }

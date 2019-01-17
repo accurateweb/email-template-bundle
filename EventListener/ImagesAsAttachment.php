@@ -10,15 +10,22 @@ class ImagesAsAttachment
 {
   private $imageBaseDir;
   private $logger;
+  private $replace;
 
-  public function __construct ($imageBaseDir, LoggerInterface $logger)
+  public function __construct ($imageBaseDir, LoggerInterface $logger, $replace = false)
   {
     $this->imageBaseDir = $imageBaseDir;
     $this->logger = $logger;
+    $this->replace = $replace;
   }
 
   public function onCreateMessage (EmailMessageEvent $emailMessageEvent)
   {
+    if (!$this->replace)
+    {
+      return false;
+    }
+
     $message = $emailMessageEvent->getMessage();
     $body = $message->getBody();
     preg_match_all('~<img.*?src=.([\/.a-z0-9:_-]+).*?>~si', $body, $matches);

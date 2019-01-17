@@ -12,6 +12,7 @@
 namespace Accurateweb\EmailTemplateBundle;
 
 use Accurateweb\EmailTemplateBundle\DependencyInjection\AccuratewebEmailTemplateExtension;
+use Accurateweb\EmailTemplateBundle\DependencyInjection\Compiler\ImagesAsAttachmentCompilerPass;
 use Accurateweb\EmailTemplateBundle\DependencyInjection\Compiler\TemplateLoaderCompilerPass;
 use Accurateweb\EmailTemplateBundle\DependencyInjection\Compiler\TwigFormResourceCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,5 +34,6 @@ class AccuratewebEmailTemplateBundle extends Bundle
   {
     $container->addCompilerPass(new TwigFormResourceCompilerPass());
     $container->addCompilerPass(new TemplateLoaderCompilerPass());
+    $container->addCompilerPass(new ImagesAsAttachmentCompilerPass());
   }
 }
