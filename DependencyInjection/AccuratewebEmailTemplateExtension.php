@@ -21,6 +21,10 @@ class AccuratewebEmailTemplateExtension extends Extension
 {
   public function load(array $config, ContainerBuilder $container)
   {
+    $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+    $loader->load('email_templates.yml');
+    $loader->load('services.yml');
   }
 
   public function getAlias()

@@ -15,11 +15,6 @@ class TemplateLoaderCompilerPass implements CompilerPassInterface
     $config = $container->getExtensionConfig('aw_email_templating');
     $_config = $config[0];
 
-    $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
-
-    $loader->load('email_templates.yml');
-    $loader->load('services.yml');
-
     $definition = $container->getDefinition('aw_email_templating.template.factory');
 
     foreach ($_config['email_templates'] as $name => $configuration)
