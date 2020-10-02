@@ -62,16 +62,19 @@ class ImagesAsAttachment
         $filePath = sprintf('%s%s', $this->imageBaseDir, $img);
       }
 
-      try
+      if (file_exists($filePath))
       {
-        $cid = $message->embed(\Swift_Image::fromPath($filePath));
-      }
-      catch (Swift_IoException $e)
-      {
-        $this->logger->warning($e->getMessage());
-      }
+        try
+        {
+          $cid = $message->embed(\Swift_Image::fromPath($filePath));
+        }
+        catch (Swift_IoException $e)
+        {
+          $this->logger->warning($e->getMessage());
+        }
 
-      $body = str_replace($img, $cid, $body);
+        $body = str_replace($img, $cid, $body);
+      }
     }
 
     $message->setBody($body);
