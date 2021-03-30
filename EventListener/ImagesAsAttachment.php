@@ -50,6 +50,11 @@ class ImagesAsAttachment
           continue;
         }
 
+        if ($imgContent === false)
+        {
+          continue;
+        }
+        
         file_put_contents($filePath, $imgContent);
       }
       else
