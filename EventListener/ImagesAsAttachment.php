@@ -34,7 +34,8 @@ class ImagesAsAttachment
     {
       if (preg_match('#^[a-zA-Z]+://#', $img))
       {
-        $filePath = tempnam(sys_get_temp_dir(), 'AwEmailImage');
+        $ext = preg_replace('/.*\.(.+)$/', '$1', $img);
+        $filePath = tempnam(sys_get_temp_dir(), 'AwEmailImage') . '.' . $ext;
 
         try
         {
@@ -54,7 +55,7 @@ class ImagesAsAttachment
         {
           continue;
         }
-        
+
         file_put_contents($filePath, $imgContent);
       }
       else
